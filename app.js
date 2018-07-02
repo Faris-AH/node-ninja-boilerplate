@@ -10,12 +10,14 @@ const app = express();
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(process.env.MONGODB_URI);
-mongoose.connection.on('error', (err) => {
-  console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
-  process.exit();
-});
+mongoose.connect(process.env.MONGODB_URI)
+.then(connection => {
+    console.log('Connected to MongoDB')
+})
+.catch(error => {
+  console.log(error.message)
+ })
+
 
 /**
  * Express configuration.
