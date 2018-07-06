@@ -1,6 +1,10 @@
 const express = require('express');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+const user = require('./app/user/user.route');
+const path = require('path');
 
 /**
  * Create Express server.
@@ -8,15 +12,28 @@ const mongoose = require('mongoose');
 const app = express();
 
 /**
+ * Load environment variables from .env file
+ */
+dotenv.config({path: __dirname + '/.env.example'});
+
+
+/**
  * Connect to MongoDB.
  */
 mongoose.connect(process.env.MONGODB_URI)
-.then(connection => {
+  .then(connection => {
     console.log('Connected to MongoDB')
-})
-.catch(error => {
-  console.log(error.message)
- })
+  })
+  .catch(error => {
+    console.log(error.message)
+  })
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use('/v1/api/user', user);
+
+
 
 
 /**
