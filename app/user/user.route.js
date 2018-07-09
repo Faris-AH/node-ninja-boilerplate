@@ -19,5 +19,10 @@ router.post('/signup', [
     }
     UserController.signupPost(req, res, next);
   }]);
+router.post('/me',[
+  (req,res,next) => {
+    UserController.me(req,res,next);
+  }
+])
 
 module.exports = router;

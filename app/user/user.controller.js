@@ -13,4 +13,13 @@ UserController.prototype.signupPost = async function (req, res) {
     res.json(Response.Error());
   }
 }
+UserController.prototype.me = async function (req, res) {
+  try {
+    let response = await UserService.me(req, res);
+    res.json(response);
+  }
+  catch (e) {
+    res.json(Response.Error());
+  }
+}
 module.exports = UserController;

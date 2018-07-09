@@ -1,12 +1,26 @@
 const mongoose = require('mongoose');
+
+const userSchemaOptions =  {
+  timestamps: true,
+  toJSON: {
+    virtuals: true
+  }
+};
 const userSchema = mongoose.Schema({
+  id: String,
   email: { type: String, unique: true },
-  password: String
-});
+  password: String,
+  token: String
+},userSchemaOptions);
 
 const user = mongoose.model('User', userSchema);
-
-function User(){
+userSchema.options.toJSON.transform = function (doc, ret, options) {
+  // remove the _id of every document before returning the result
+  ret.id = ret._id;
+  delete ret._id;
+  delete ret.__v;
+}
+function User() {
   this.model = user;
 }
 module.exports.userModel = User;
