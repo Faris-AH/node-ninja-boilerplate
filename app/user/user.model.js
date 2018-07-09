@@ -7,7 +7,6 @@ const userSchemaOptions =  {
   }
 };
 const userSchema = mongoose.Schema({
-  id: String,
   email: { type: String, unique: true },
   password: String,
   token: String
@@ -19,6 +18,7 @@ userSchema.options.toJSON.transform = function (doc, ret, options) {
   ret.id = ret._id;
   delete ret._id;
   delete ret.__v;
+  delete ret.password;
 }
 function User() {
   this.model = user;

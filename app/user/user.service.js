@@ -23,28 +23,43 @@ UserService.prototype.signupPost = async function (req, res) {
 
   }
   catch (e) {
-    return Response.Error();
+    if (e && e.code === 11000) {
+      return Response.BadRequest("Email is already resgistered.");
+    }
+    else {
+      return Response.Error();
+    }
   }
 }
 UserService.prototype.me = async function (req, res) {
   const token = req.headers['authorization'];
   try {
     const decoded = await jwt.verify(token, process.env.SECRET);
-    const user = await User.model.findById(decoded.id,
-      { password: 0 });
+    const user = await User.model.findById(decoded.id);
+    if (!user) {
+      return Response.Unauthorized("Unauthorized");
+
+    }
     return Response.Success(user, "Success");
   }
   catch (e) {
-    return Response.Error();
+    return Response.Unauthorized("Unauthorized");
   }
 
 }
 UserService.prototype.login = async function (req, res) {
-  const token = req.headers['authorization'];
   try {
-    const decoded = await jwt.verify(token, process.env.SECRET);
-    const user = await User.model.findById(decoded.id,
-      { password: 0 });
+    const user = await User.model.findOne({ email: req.body.email });
+    if (!user) {
+      return Response.BadRequest("Email or password is incorrect.");
+    }
+    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    if (!passwordIsValid) {
+      return Response.BadRequest("Email or password is incorrect.");
+    }
+    user['token'] = jwt.sign({ id: user.id }, process.env.SECRET, {
+      expiresIn: 86400 // expires in 24 hours
+    });
     return Response.Success(user, "Success");
   }
   catch (e) {

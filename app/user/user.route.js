@@ -23,6 +23,18 @@ router.post('/me',[
   (req,res,next) => {
     UserController.me(req,res,next);
   }
+]);
+router.post('/login',[
+  check('email').isEmail(),
+  check('password').isLength({ min: 5 }),
+  (req,res,next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.json(Response.ValidationError(errors.array()));
+      return;
+    }
+    UserController.login(req,res,next);
+  }
 ])
 
 module.exports = router;
