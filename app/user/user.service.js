@@ -1,19 +1,25 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const User = new (require('./user.model')).userModel();
 const Response = require('../common/response');
 
-const User = new (require('./user.model')).userModel();
 
-
-function UserService(){
+function UserService() {
 
 }
-UserService.prototype.signupPost = async function(data){
-  try{
-    let newUser = await User.model.create(data);
+UserService.prototype.signupPost = async function (req, res) {
+  const hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  const userData = {
+    email: req.body.email,
+    password: hashedPassword
+  };
+  try {
+    let newUser = await User.model.create(userData);
     return Response.Success(newUser, 'Account registered successfully');
 
   }
-  catch(e){
-    console.log(e);
+  catch (e) {
+   return Response.Error();
   }
 }
 

@@ -1,13 +1,23 @@
 const express = require('express');
 const router = express.Router();
-
+const { check, validationResult } = require('express-validator/check');
 const UserController = new (require("./user.controller"))();
+const Response = require('../common/response');
+
 
 /**
  * User Signup
  */
-router.post('/signup', function (req, res, next) {
-  UserController.signupPost(req, res, next);
-});
+router.post('/signup', [
+  check('email').isEmail(),
+  check('password').isLength({ min: 5 }),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.json(Response.ValidationError(errors.array()));
+      return;
+    }
+    UserController.signupPost(req, res, next);
+  }]);
 
 module.exports = router;
