@@ -5,11 +5,13 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const user = require('./app/user/user.route');
 const path = require('path');
-
+const cors = require('cors')
 /**
  * Create Express server.
  */
 const app = express();
+
+app.use(cors());
 
 /**
  * Load environment variables from .env file
