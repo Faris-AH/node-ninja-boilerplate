@@ -7,7 +7,7 @@ function UserController() {
 UserController.prototype.signupPost = async function (req, res) {
   try {
     let response = await UserService.signupPost(req, res);
-    Response.Send(res, res.json(response));
+    Response.Send(res, response);
 
   }
   catch (e) {
