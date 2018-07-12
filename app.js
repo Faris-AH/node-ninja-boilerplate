@@ -1,7 +1,6 @@
 const express = require('express');
 const chalk = require('chalk');
 const dotenv = require('dotenv');
-const path = require('path');
 const cors = require('cors')
 const db = require('./db');
 const indexRoutes = require('./app/index.route');
@@ -17,6 +16,9 @@ app.use(cors());
  */
 dotenv.config({path: __dirname + '/.env.example'});
 
+/**
+ * Db initialization
+ */
 db.init();
 
 
