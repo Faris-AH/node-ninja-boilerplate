@@ -1,11 +1,10 @@
 const express = require('express');
 const chalk = require('chalk');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const user = require('./app/user/user.route');
 const path = require('path');
 const cors = require('cors')
+const db = require('./db');
+const indexRoutes = require('./app/index.route');
 /**
  * Create Express server.
  */
@@ -18,25 +17,13 @@ app.use(cors());
  */
 dotenv.config({path: __dirname + '/.env.example'});
 
-
-/**
- * Connect to MongoDB.
- */
-mongoose.connect(process.env.MONGODB_URI)
-  .then(connection => {
-    console.log('Connected to MongoDB')
-  })
-  .catch(error => {
-    console.log(error.message)
-  })
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use('/v1/api/user', user);
+db.init();
 
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
+indexRoutes(app);
 
 /**
  * Express configuration.
