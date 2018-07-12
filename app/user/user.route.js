@@ -14,7 +14,7 @@ router.post('/signup', [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.json(Response.ValidationError(errors.array()));
+      Response.Send(res,Response.ValidationError(errors.array()));
       return;
     }
     UserController.signupPost(req, res, next);
@@ -30,8 +30,9 @@ router.post('/login',[
   (req,res,next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.json(Response.ValidationError(errors.array()));
+      Response.Send(res,Response.ValidationError(errors.array()));
       return;
+      
     }
     UserController.login(req,res,next);
   }

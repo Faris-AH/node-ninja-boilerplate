@@ -73,4 +73,8 @@ Response.NotFound = function (message) {
     return new Response(null, ResponseCode.NOT_FOUND, message || ResponseMessage.NOT_FOUND);
 };
 
+Response.Send = function (res, data) {
+    res.status(data.status).json(data);
+};
+
 module.exports = Response;
