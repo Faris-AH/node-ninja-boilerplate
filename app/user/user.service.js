@@ -14,6 +14,10 @@ UserService.prototype.signupPost = async function (req, res) {
     password: hashedPassword
   };
   try {
+    const user = await User.model.findOne({ email: userData.email });
+    if (user) {
+      return Response.BadRequest("Email is already resgistered.");
+    }
     let newUser = await User.model.create(userData);
     // create a token
     newUser['token'] = jwt.sign({ id: newUser.id }, process.env.SECRET, {
@@ -23,12 +27,7 @@ UserService.prototype.signupPost = async function (req, res) {
 
   }
   catch (e) {
-    if (e && e.code === 11000) {
-      return Response.BadRequest("Email is already resgistered.");
-    }
-    else {
-      return Response.Error();
-    }
+    return Response.Error();
   }
 }
 UserService.prototype.me = async function (req, res) {
