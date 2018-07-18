@@ -32,13 +32,10 @@ UserService.prototype.signupPost = async function (req, res) {
   }
 }
 UserService.prototype.me = async function (req, res) {
-  const token = req.headers['authorization'];
   try {
-    const decoded = await jwt.verify(token, process.env.SECRET);
-    const user = await User.model.findById(decoded.id);
+    const user = await User.model.findById(req.userId);
     if (!user) {
       return Response.Unauthorized("Unauthorized");
-
     }
     return Response.Success(user, "Success");
   }
