@@ -25,6 +25,12 @@ router.post('/me', [
     UserController.me(req, res, next);
   }
 ]);
+router.post('/all', [
+  VerifyToken,
+  (req, res, next) => { 
+    UserController.fetchSignupUsers(req,res,next);
+  }
+])
 router.post('/login', [
   check('email').isEmail(),
   check('password').isLength({ min: 5 }),

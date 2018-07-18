@@ -7,6 +7,18 @@ const Response = require('../common/response');
 function UserService() {
 
 }
+UserService.prototype.fetchSignupUsers = async function (req,res){
+  try{
+    const users = await User.model.find({});
+    if(!users){
+      return Response.Success([],'Success');
+    }
+    return Response.Success(users,'Success');
+  }
+  catch(e){
+    return Response.Error();
+  }
+}
 UserService.prototype.signupPost = async function (req, res) {
   const hashedPassword = bcrypt.hashSync(req.body.password, 8);
   const userData = {
