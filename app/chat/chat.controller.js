@@ -15,5 +15,14 @@ ChatController.prototype.newConversation = async function (req, res, next) {
     Response.Send(res, Response.Error());
   }
 };
+ChatController.prototype.sendReply = async function(req, res, next){
+  try{
+    let response = await ChatService.sendReply(req,res);
+    Response.Send(res, response);
+  }
+  catch(e){
+    Response.Send(res, Response.Error());
+  }
+}
 
 module.exports = ChatController;

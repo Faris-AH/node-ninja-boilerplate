@@ -21,7 +21,20 @@ ChatService.prototype.createNewConversation = async function (req, res) {
       }
     }
   }
-  catch(e){
+  catch (e) {
+    return Response.Error();
+  }
+}
+ChatService.prototype.sendReply = async function (req, res) {
+  try {
+    const reply = await  Message.create({
+      conversationId: req.params.conversationId,
+      body: req.body.message,
+      author: req.userId
+    });
+    return Response.Success(reply, 'Success');
+  }
+  catch (e) { 
     return Response.Error();
   }
 }

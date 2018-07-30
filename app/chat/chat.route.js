@@ -21,4 +21,17 @@ router.post('/new/:recipient?', [
     ChatController.newConversation(req, res, next);
   }]);
 
+  router.post('/:conversationId?',[
+    VerifyToken,
+    check('conversationId').exists(),
+    (req, res, next) => {
+      const errors = validationResult(req);
+      if(!errors.isEmpty()){
+        Response.Send(res, Response.ValidationError(errors.array()));
+        return ;
+      }
+      ChatController.sendReply(req,res,next);
+    }
+  ])
+
 module.exports = router;
