@@ -27,7 +27,7 @@ UserController.prototype.signupPost = async function (req, res) {
 UserController.prototype.me = async function (req, res) {
   try {
     let response = await UserService.me(req, res);
-    Response.Send(res, res.json(response));
+    Response.Send(res, response);
   }
   catch (e) {
     Response.Send(res, Response.Error());
