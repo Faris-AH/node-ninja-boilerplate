@@ -19,6 +19,14 @@ ChatService.prototype.createNewConversation = async function (req, res) {
       if (message) {
         return Response.Success(message, 'Success');
       }
+      else {
+        return Response.Error();
+
+      }
+    }
+    else {
+      return Response.Error();
+
     }
   }
   catch (e) {
@@ -27,14 +35,32 @@ ChatService.prototype.createNewConversation = async function (req, res) {
 }
 ChatService.prototype.sendReply = async function (req, res) {
   try {
-    const reply = await  Message.create({
+    const reply = await Message.create({
       conversationId: req.params.conversationId,
       body: req.body.message,
       author: req.userId
     });
-    return Response.Success(reply, 'Success');
+    if (reply) {
+      return Response.Success(reply, 'Success');
+    }
+    else {
+      return Response.Error();
+    }
   }
-  catch (e) { 
+  catch (e) {
+    return Response.Error();
+  }
+}
+ChatService.prototype.getConversation = async function (req, res) {
+  try {
+    const conversation = await Conversation.findOne({ _id: req.params.conversationId });
+    if (conversation) {
+      return Response.Success(conversation, 'Success');
+    }
+    else {
+      return Response.Error();
+    }
+  } catch (error) {
     return Response.Error();
   }
 }

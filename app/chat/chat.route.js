@@ -21,7 +21,7 @@ router.post('/new/:recipient?', [
     ChatController.newConversation(req, res, next);
   }]);
 
-  router.post('/:conversationId?',[
+  router.post('/reply/:conversationId?',[
     VerifyToken,
     check('conversationId').exists(),
     (req, res, next) => {
@@ -32,6 +32,18 @@ router.post('/new/:recipient?', [
       }
       ChatController.sendReply(req,res,next);
     }
-  ])
+  ]);
+  router.post('/:conversationId?',[
+    VerifyToken,
+    check('conversationId').exists(),
+    (req, res, next) => {
+      const errors = validationResult(req);
+      if(!errors.isEmpty()){
+        Response.Send(res, Response.ValidationError(errors.array()));
+        return ;
+      }
+      ChatController.getConversation(req,res,next);
+    }
+  ]);
 
 module.exports = router;
