@@ -4,7 +4,7 @@ const { check, validationResult } = require('express-validator/check');
 const UserController = new (require("./user.controller"))();
 const Response = require('../common/response');
 const VerifyToken = require("../middleware/verify-token");
-
+const acl = require('express-acl');
 /**
  * User Signup
  */
@@ -21,12 +21,14 @@ router.post('/signup', [
   }]);
 router.post('/me', [
   VerifyToken,
+  acl.authorize,
   (req, res, next) => {
     UserController.me(req, res, next);
   }
 ]);
 router.post('/all', [
   VerifyToken,
+  acl.authorize,
   (req, res, next) => { 
     UserController.fetchSignupUsers(req,res,next);
   }

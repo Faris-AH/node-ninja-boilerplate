@@ -1,9 +1,11 @@
 const express = require('express');
 const chalk = require('chalk');
 const dotenv = require('dotenv');
-const cors = require('cors')
+const cors = require('cors');
+const acl = require('express-acl');
 const db = require('./db');
 const indexRoutes = require('./app/index.route');
+const Response = require('./app/common/response');
 /**
  * Create Express server.
  */
@@ -14,8 +16,21 @@ app.use(cors());
 /**
  * Load environment variables from .env file
  */
-dotenv.config({path: __dirname + '/.env.example'});
+dotenv.config({ path: __dirname + '/.env.example' });
 
+
+
+let aclConfig = {
+  baseUrl: 'v1/api',
+  defaultRole: 'anonymous'
+};
+let responseObject = {
+  status: 'Access Denied',
+  message: 'You are not authorized to access this resource',
+  data: null
+};
+
+acl.config(aclConfig, responseObject);
 /**
  * Db initialization
  */

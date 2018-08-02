@@ -1,0 +1,28 @@
+[
+  {
+    "group": "admin",
+    "permissions": [
+      {
+        "resource": "*",
+        "methods": "*",
+        "action": "allow"
+      }
+    ],
+    "action": "allow"
+  },
+  {
+    "group": "user",
+    "permissions": [
+      {
+        "resource": "user/*",
+        "methods": ["POST"],
+        "action": "allow"
+      },
+      {
+        "resource": "chat/*",
+        "methods": ["POST"],
+        "action": "allow"
+      }
+    ]
+  }
+]

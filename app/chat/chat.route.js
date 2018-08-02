@@ -5,11 +5,13 @@ const ChatController = new (require("./chat.controller"))();
 const Response = require('../common/response');
 const VerifyToken = require("../middleware/verify-token");
 const IsUserExits = require("../middleware/is-user-exits");
+const acl = require('express-acl');
 /**
  * User Signup
  */
 router.post('/new/:recipient?', [
   VerifyToken,
+  acl.authorize,
   check('recipient').exists(),
   IsUserExits,
   (req, res, next) => {
@@ -23,6 +25,7 @@ router.post('/new/:recipient?', [
 
   router.post('/reply/:conversationId?',[
     VerifyToken,
+    acl.authorize,
     check('conversationId').exists(),
     (req, res, next) => {
       const errors = validationResult(req);
@@ -35,6 +38,7 @@ router.post('/new/:recipient?', [
   ]);
   router.post('/:conversationId?',[
     VerifyToken,
+    acl.authorize,
     check('conversationId').exists(),
     (req, res, next) => {
       const errors = validationResult(req);
