@@ -8,10 +8,11 @@ function verifyToken(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.SECRET);
     req.userId = decoded.id;
+    req.decoded = decoded;
     next();
   }
   catch (e) {
-   return Response.Send(res, Response.Unauthorized("Unauthorized"));
+    return Response.Send(res, Response.Unauthorized("Unauthorized"));
   }
 };
 

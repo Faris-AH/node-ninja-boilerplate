@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchemaOptions =  {
+const userSchemaOptions = {
   timestamps: true,
   toJSON: {
     virtuals: true
@@ -9,8 +9,9 @@ const userSchemaOptions =  {
 const userSchema = mongoose.Schema({
   email: { type: String, unique: true },
   password: String,
-  token: String
-},userSchemaOptions);
+  token: String,
+  role: String
+}, userSchemaOptions);
 
 const user = mongoose.model('User', userSchema);
 userSchema.options.toJSON.transform = function (doc, ret, options) {

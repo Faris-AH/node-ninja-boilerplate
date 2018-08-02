@@ -7,15 +7,15 @@ const Response = require('../common/response');
 function UserService() {
 
 }
-UserService.prototype.fetchSignupUsers = async function (req,res){
-  try{
+UserService.prototype.fetchSignupUsers = async function (req, res) {
+  try {
     const users = await User.model.find({});
-    if(!users){
-      return Response.Success([],'Success');
+    if (!users) {
+      return Response.Success([], 'Success');
     }
-    return Response.Success(users,'Success');
+    return Response.Success(users, 'Success');
   }
-  catch(e){
+  catch (e) {
     return Response.Error();
   }
 }
@@ -23,7 +23,8 @@ UserService.prototype.signupPost = async function (req, res) {
   const hashedPassword = bcrypt.hashSync(req.body.password, 8);
   const userData = {
     email: req.body.email,
-    password: hashedPassword
+    password: hashedPassword,
+    role: req.body.role || 'user'
   };
   try {
     const user = await User.model.findOne({ email: userData.email });
@@ -65,7 +66,7 @@ UserService.prototype.login = async function (req, res) {
     if (!passwordIsValid) {
       return Response.BadRequest("Email or password is incorrect.");
     }
-    user['token'] = jwt.sign({ id: user.id }, process.env.SECRET, {
+    user['token'] = jwt.sign({ id: user.id, role: user.role }, process.env.SECRET, {
       expiresIn: 86400 // expires in 24 hours
     });
     return Response.Success(user, "Success");
