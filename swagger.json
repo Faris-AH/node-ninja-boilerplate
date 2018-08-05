@@ -70,8 +70,8 @@
     "User": {
       "properties": {
         "data": {
-          "type":"object",
-          "properties":{
+          "type": "object",
+          "properties": {
             "email": {
               "type": "string",
               "uniqueItems": true
@@ -93,11 +93,11 @@
             }
           }
         },
-        "status":{
-          "type":"string"
+        "status": {
+          "type": "string"
         },
-        "message":{
-          "type":"string"
+        "message": {
+          "type": "string"
         }
       }
     },
