@@ -3,6 +3,9 @@ const chalk = require('chalk');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const acl = require('express-acl');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 const db = require('./db');
 const indexRoutes = require('./app/index.route');
 const Response = require('./app/common/response');
@@ -41,7 +44,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 indexRoutes(app);
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 /**
  * Express configuration.
  */

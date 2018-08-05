@@ -26,6 +26,7 @@
     "express-validator": "^5.2.0",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.1.7",
+    "swagger-ui-express": "^3.0.10",
     "underscore": "^1.9.1"
   }
 }
