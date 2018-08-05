@@ -13,7 +13,13 @@
     }
   },
   "host": "localhost:8080",
-  "basePath": "/",
+  "basePath": "/v1/api/",
+  "tags": [
+    {
+      "name": "User",
+      "description": "API for authorization/authenticating users in the system"
+    }
+  ],
   "schemes": [
     "http"
   ],
@@ -26,6 +32,9 @@
   "paths": {
     "/user/signup": {
       "post": {
+        "tags": [
+          "User"
+        ],
         "summary": "Register new user in system",
         "description": "Register new user in system",
         "parameters": [
@@ -34,7 +43,15 @@
             "in": "body",
             "description": "User that we want to create",
             "schema": {
-              "$ref": "#/definitions/User"
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "uniqueItems": true
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
             }
           }
         ],
@@ -44,12 +61,6 @@
             "schema": {
               "$ref": "#/definitions/User"
             }
-          },
-          "401": {
-            "description": "UnAuthorized",
-            "schema": {
-              "$ref": "#/definitions/UnAuthorized"
-            }
           }
         }
       }
@@ -57,17 +68,36 @@
   },
   "definitions": {
     "User": {
-      "required": [
-        "email",
-        "password"
-      ],
       "properties": {
-        "email": {
-          "type": "string",
-          "uniqueItems": true
+        "data": {
+          "type":"object",
+          "properties":{
+            "email": {
+              "type": "string",
+              "uniqueItems": true
+            },
+            "role": {
+              "type": "string"
+            },
+            "createAt": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
         },
-        "password": {
-          "type": "string"
+        "status":{
+          "type":"string"
+        },
+        "message":{
+          "type":"string"
         }
       }
     },
